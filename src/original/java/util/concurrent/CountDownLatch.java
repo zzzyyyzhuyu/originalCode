@@ -126,6 +126,7 @@ public class CountDownLatch {
     /**
      * Synchronization control For CountDownLatch.
      * Uses AQS state to represent count.
+     * 使用内部类控制倒计数
      */
     private static final class Sync extends AbstractQueuedSynchronizer {
         private static final long serialVersionUID = 4982264981922014374L;
@@ -154,12 +155,18 @@ public class CountDownLatch {
             }
         }
     }
-
+    /**
+     * @Author zhuyu
+     * @Description 内部类引用对象
+     * @Date  2019/8/8 18:54
+     * @Param
+     * @return
+    */
     private final original.java.util.concurrent.CountDownLatch.Sync sync;
 
     /**
      * Constructs a {@code CountDownLatch} initialized with the given count.
-     *
+     * 设置倒计数锁的倒计数 如果数字不正常是则抛出异常
      * @param count the number of times {@link #countDown} must be invoked
      *        before threads can pass through {@link #await}
      * @throws IllegalArgumentException if {@code count} is negative
@@ -170,11 +177,12 @@ public class CountDownLatch {
     }
 
     /**
+     * 调用时一直循环等待，直到计数变为0，除非出现打断异常
      * Causes the current thread to wait until the latch has counted down to
      * zero, unless the thread is {@linkplain Thread#interrupt interrupted}.
      *
      * <p>If the current count is zero then this method returns immediately.
-     *
+     *     如果当前倒计数是0则立刻返回
      * <p>If the current count is greater than zero then the current
      * thread becomes disabled for thread scheduling purposes and lies
      * dormant until one of two things happen:
@@ -201,6 +209,7 @@ public class CountDownLatch {
     }
 
     /**
+     * 调用时一直循环等待 可以进行设置延迟时间和延迟时间类型
      * Causes the current thread to wait until the latch has counted down to
      * zero, unless the thread is {@linkplain Thread#interrupt interrupted},
      * or the specified waiting time elapses.
@@ -247,6 +256,7 @@ public class CountDownLatch {
     }
 
     /**
+     * 调用时使倒计数-1
      * Decrements the count of the latch, releasing all waiting threads if
      * the count reaches zero.
      *
@@ -262,7 +272,7 @@ public class CountDownLatch {
 
     /**
      * Returns the current count.
-     *
+     * 获取当前倒计数
      * <p>This method is typically used for debugging and testing purposes.
      *
      * @return the current count
@@ -275,7 +285,7 @@ public class CountDownLatch {
      * Returns a string identifying this latch, as well as its state.
      * The state, in brackets, includes the String {@code "Count ="}
      * followed by the current count.
-     *
+     * 覆盖toString方法
      * @return a string identifying this latch, as well as its state
      */
     public String toString() {
